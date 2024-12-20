@@ -1,0 +1,66 @@
+# training parameters for feature extractor
+batch_size: 256
+epochs: 30
+eval_every_n_epochs: 1
+log_every_n_steps: 25
+weight_decay: 10e-6
+
+# model parameters for feature extractor
+model:
+  out_dim: 512
+
+# dataset parameters for feature extractor
+dataset:
+  s: 1
+  input_shape: (224,224,3)
+  num_workers: 2
+  valid_size: 0.125
+  train_patches: 'train_patches.csv'
+
+# loss parameters for feature extractor
+loss:
+  temperature: 0.5
+  use_cosine_similarity: True
+  
+# save data parameters for feature extractor
+checkpoints:
+  model: 'results/feature_extractor/models'
+  loss: 'results/feature_extractor/evaluation'
+  
+# parameters for building graphs
+build_graphs:
+  patch_dir: 'train_patches' 
+  label_csv: 'data_labels.csv'
+  ResNet_pth: 'results/feature_extractor/models/30_checkpoint.pth'
+  save_dir: 'image_graphs/train_graphs'
+  
+# parameters to load graph transformer dataset
+graph_dataset:
+  graphs_csv: 'train_graph_paths.csv'
+  val_size: 0.125
+  batch_size: 8
+
+# graph transformer model/training parameters
+graph_transformer:
+  embed_dim: 64
+  num_heads: 8
+  mlp_dim: 128
+  num_layers: 3
+  num_classes: 6
+  
+  epochs: 250
+  learning_rate: 10e-3
+  lr_step: [30, 100, 200]
+  eval_every_n_epochs: 1
+  
+# save data parameters for graph transformer
+transformer_checkpoints:
+  model: 'results/graph_transformer/models'
+  loss: 'results/graph_transformer/evaluation'
+
+# testing parameters for graph transformer 
+transformer_evaluation:
+  model_dir: 'results/graph_transformer/models'
+  best_model: 'results/graph_transformer/models/008_best_val_checkpoint.pth'
+  test_graphs_csv: 'test_graph_paths.csv'
+  batch_size: 8
